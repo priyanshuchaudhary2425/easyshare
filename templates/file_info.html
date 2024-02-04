@@ -1,0 +1,22 @@
+<!-- templates/file_info.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>File Information</h1>
+        <p><strong>File Name:</strong> {{ file_name }}</p>
+        <p><strong>File Size:</strong> {{ file_size }}</p>
+        <a href="{{ url_for('download', link=link) }}" class="button">Download</a>
+
+        <!-- Additional Link to Go Back to Main Page -->
+        <p>Wanna Share file? visit <a href="{{ url_for('index') }}" class="button main-page-link">main page</a>.</p>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyShare</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Clipboard.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+        <h1>Share anything to anyone anywhere!!</h1>
+
+        <!-- File Upload Form -->
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Choose a file or folder:</label>
+            <input type="file" id="file" name="file" required multiple>
+
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if error %}
+            <!-- Error Message for File Size Exceeding 5000MB -->
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if file_link %}
+            <!-- Link Display -->
+            <div class="link-container">
+                <p>Your shareable link:</p>
+                <input type="text" id="shareLink" value="{{ url_for('file_info', link=file_link, _external=True) }}" readonly>
+                <button class="btn" data-clipboard-target="#shareLink" onclick="copyLink()">Copy Link</button>
+            </div>
+
+        {% endif %}
+
+        {% if uploads_remaining is defined %}
+            <p>{{ uploads_remaining }} uploads remaining today.</p>
+        {% endif %}
+
+        {% if space_remaining is defined %}
+            <p>{{ '{:.2f}'.format(space_remaining) }} MB of storage space remaining.</p>
+        {% endif %}
+    </div>
+
+    <!-- Clipboard.js Initialization -->
+    <script>
+        function copyLink() {
+            var btn = document.querySelector('.btn');
+            var clipboard = new ClipboardJS(btn);
+
+            clipboard.on('success', function(e) {
+                btn.textContent = 'Copied!';
+                setTimeout(function() {
+                    btn.textContent = 'Copy Link';
+                }, 2000);
+                e.clearSelection();
+            });
+        }
+    </script>
+</body>
+</html>
